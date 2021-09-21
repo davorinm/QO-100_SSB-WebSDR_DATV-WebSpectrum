@@ -314,8 +314,10 @@ void readAMSConfig()
     char *hp = getConfigElement("UDP_IPADDRESS");
     if(hp) strncpy(beacon_udp_ip, hp, sizeof(beacon_udp_ip)-1);
 
+#ifdef WIDEBAND
     // read serial number of pluto (for WB only, because NB is handled by the NB pluto-driver)
     memset(pluto_serialnumber,0,sizeof(pluto_serialnumber));
     hp = getConfigElement("PLUTO_WIDEBAND");
     if(hp) strncpy(pluto_serialnumber,hp, sizeof(pluto_serialnumber)-1);
+#endif
 }
