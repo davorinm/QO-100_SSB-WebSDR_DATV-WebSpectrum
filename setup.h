@@ -18,3 +18,4 @@ extern int tx_correction;
 extern int icom_satmode;
 extern char mtip[];
 extern char pluto_ip[];
+extern int mt_mode;

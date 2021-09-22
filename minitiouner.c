@@ -104,8 +104,10 @@ void write_tcp(char *s)
 	hints.ai_flags = 0;
 	hints.ai_protocol = 0;
 	struct addrinfo* results;
+    char sport[20];
+    snprintf(sport,19,"%d",minitiouner_port);
 
-	if (getaddrinfo(mtip, "8765", &hints, &results) != 0) {
+	if (getaddrinfo(mtip, sport, &hints, &results) != 0) {
 		printf("error getaddrinfo()'ing, translation error\n");
 		return;
 	}
@@ -130,7 +132,8 @@ void write_tcp(char *s)
 	int ret = write(sck_fd, s, strlen(s));
 	if (ret) {}
 
-    read(sck_fd,s,999);
+    ssize_t r = read(sck_fd,s,999);
+    if (r) { s[r] = 0; printf("%s\n",s);}
 
 	close(sck_fd);
 }

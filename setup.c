@@ -55,6 +55,7 @@ int configrequest = 0;
 int retune_setup = 0;
 int tx_correction = 0;
 int icom_satmode = 0;
+int mt_mode = 0;
 
 void calc_setup()
 {
@@ -141,7 +142,7 @@ int i;
         fprintf(fw,"tx_correction:%lld\n",(long long int)tx_correction);
         fprintf(fw,"icom_satmode:%lld\n",(long long int)icom_satmode);
         fprintf(fw,"pluto_ip:%s\n",pluto_ip);
-        
+        fprintf(fw,"mt_mode:%lld\n",(long long int)mt_mode);
 
         fclose(fw);
     }
@@ -307,6 +308,7 @@ static int32_t old_downmixer_outqrg = 0;
         pluto_ip[19]=0;
     }
     else return 0;
+    if(readnum(&num,"mt_mode")) mt_mode = num; else return 0;
     
     if( old_lnb_crystal != lnb_crystal ||
         old_lnb_multiplier != lnb_multiplier ||
@@ -364,6 +366,7 @@ void sendConfigToBrowser()
     insertCfg4(tx_correction);
     insertCfg4(icom_satmode);
     insertCfgString(pluto_ip);
+    insertCfg4(mt_mode);
     
     ws_send_config(cfgdata, idx);
 }
@@ -401,6 +404,8 @@ static int32_t old_lnb_multiplier = 0;
 static int32_t old_downmixer_outqrg = 0;
 
     hp_elem = scfg;
+
+    //printf("elem:<%s>\n",scfg);
     
     
     if(getNextElement(callsign) == 0) return;
@@ -443,6 +448,9 @@ static int32_t old_downmixer_outqrg = 0;
     if(getNextElement(s) == 0) return;
     strncpy(pluto_ip,s,19);
     pluto_ip[19] = 0;
+
+    if(getNextElement(s) == 0) return;
+    mt_mode = atoi(s);
     
     if( old_lnb_crystal != lnb_crystal ||
         old_lnb_multiplier != lnb_multiplier ||

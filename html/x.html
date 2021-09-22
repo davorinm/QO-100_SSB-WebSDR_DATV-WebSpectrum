@@ -222,7 +222,7 @@ function onstart()
     document.getElementById('tx_correction').value = config.tx_correction;
     document.getElementById('icom_satmode').value = config.icom_satmode;
     document.getElementById('plutoIP').value = config.pluto_ip;
-    document.getElementById('mt_mode').value = config.mt_mode;
+    //document.getElementById('mt_mode').value = config.mt_mode;
 }
 
 function save()
@@ -240,7 +240,7 @@ function save()
     config.tx_correction = document.getElementById('tx_correction').value;
     config.icom_satmode = document.getElementById('icom_satmode').value;
     config.pluto_ip = document.getElementById('plutoIP').value;
-    config.mt_mode = document.getElementById('mt_mode').value;
+    //config.mt_mode = document.getElementById('mt_mode').value;
     
     saveConfig(); 
     
