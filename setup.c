@@ -50,7 +50,7 @@ int32_t downmixer_outqrg = DEFAULT_DOWNMIXER_OUTQRG;
 int32_t minitiouner_offset = 0;
 char mtip[20] = {"192.168.11.22"};
 char pluto_ip[20] = {"0"};
-int minitiouner_port = 6789;
+int minitiouner_port = 8765;
 int minitiouner_local = 1;
 int websock_port = DEFAULT_WEBSOCK_PORT;
 int allowRemoteAccess = 1;
@@ -58,7 +58,7 @@ int configrequest = 0;
 int retune_setup = 0;
 int tx_correction = 0;
 int icom_satmode = 0;
-int mt_mode = 0;
+int mt_mode = 1;
 
 void calc_setup()
 {
@@ -350,15 +350,12 @@ void insertCfgString(char *s)
 void sendConfigToBrowser()
 {
     //set default Minitiouner Port and IP
-    if(minitiouner_port == 6789 && mt_mode == 1)
-        minitiouner_port = 8765;
 
     if(strcmp(mtip,"192.168.11.22") == 0)
     {
         get_ownIP();
         strcpy(mtip,myfullip);
     }
-
 
     idx = 2;
     
