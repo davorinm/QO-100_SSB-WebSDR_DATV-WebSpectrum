@@ -118,7 +118,7 @@ function onstart()
         $("#txt2").text("Rufzeichen:");
         $("#txt3").text("Rufzeichen dieser WebSDR Station");
         $("#txt4").text("TCP port für SDR Daten:");
-        $("#txt5").text("zusätzlich öffne diesen TCP Port im Internet-Router. Standard Ports: SSB=8091, DATV=8090. Bei Änderung müssen html Dateien manuell geändert werden!");
+        $("#txt5").text("für externen Zugang: öffne diese TCP Ports im Internet-Router. SSB=8091, DATV=8090.");
         $("#txt6").text("Fernbedienung erlauben:");
         $("#txt7").text("LNB original Quarzfrequenz [MHz]:");
         $("#txt8").text("LNB ext. Referenz Frequenz [Hz]:");
@@ -164,7 +164,7 @@ function onstart()
         $("#txt2").text("Callsign:");
         $("#txt3").text("callsign of this WebSDR station");
         $("#txt4").text("TCP port for SDR data:");
-        $("#txt5").text("in addition open this TCP port in the INET router. Default ports: SSB=8091, DATV=8090. If changed you need to modify HTML files manually.");
+        $("#txt5").text("for external access: open this TCP port in the INET router. SSB=8091, DATV=8090.");
         $("#txt6").text("allow remote control");
         $("#txt7").text("LNB original crystal [MHz]:");
         $("#txt8").text("LNB reference frequency [Hz]:");
@@ -210,7 +210,6 @@ function onstart()
     getConfig();
     // fill into GUI
     document.getElementById('call').value = config.call;
-    document.getElementById('tcpport').value = config.websock_port;
     document.getElementById('remoteok').value = config.allowRemoteAccess;
     document.getElementById('lnb_orig').value = config.lnb_orig;
     document.getElementById('lnb_ref').value = config.lnb_crystal;
@@ -228,7 +227,6 @@ function onstart()
 function save()
 {
     config.call = document.getElementById('call').value.toUpperCase();
-    config.websock_port = document.getElementById('tcpport').value;
     config.allowRemoteAccess = document.getElementById('remoteok').value;
     config.lnb_orig = document.getElementById('lnb_orig').value;
     config.lnb_crystal = document.getElementById('lnb_ref').value;
@@ -269,7 +267,6 @@ function save()
   <tr>
     <td id="txt4"></td>
     <td>
-    <input type="text" name="tcpport" id="tcpport" oninput="this.value = this.value.replace(/[^0-9\/]/g, '').replace(/(\..*)\./g, '$1');">
     </td>
     <td id="txt5"></td>
   </tr>
