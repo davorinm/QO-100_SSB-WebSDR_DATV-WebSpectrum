@@ -50,6 +50,7 @@ void get_ownIP();
 extern int useCAT;
 int connections = 0;
 char myIP[20];
+char myfullip[20];
 
 // a new browser connected
 void onopen(int fd)
@@ -280,6 +281,7 @@ void get_ownIP()
             }
             printf("Interface : <%s>\n",ifa->ifa_name );
             printf("  Address : <%s>\n", host);
+            strcpy(myfullip,host);
             char *hp = strchr(host,'.');
             if(hp)
             {

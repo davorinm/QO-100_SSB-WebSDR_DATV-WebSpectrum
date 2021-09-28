@@ -37,6 +37,9 @@
 #include "websocket/websocketserver.h"
 
 int read_config();
+void get_ownIP();
+
+extern char myfullip[20];
 
 char callsign[20] = "CALLSIGN";
 int64_t lnb_lo = 0;
@@ -45,7 +48,7 @@ int32_t tuned_frequency = 739500000;
 int32_t lnb_multiplier = DEFAULT_LNB_MULTIPLIER;
 int32_t downmixer_outqrg = DEFAULT_DOWNMIXER_OUTQRG;
 int32_t minitiouner_offset = 0;
-char mtip[20] = {"192.168.0.25"};
+char mtip[20] = {"192.168.11.22"};
 char pluto_ip[20] = {"0"};
 int minitiouner_port = 6789;
 int minitiouner_local = 1;
@@ -346,6 +349,17 @@ void insertCfgString(char *s)
 
 void sendConfigToBrowser()
 {
+    //set default Minitiouner Port and IP
+    if(minitiouner_port == 6789 && mt_mode == 1)
+        minitiouner_port = 8765;
+
+    if(strcmp(mtip,"192.168.11.22") == 0)
+    {
+        get_ownIP();
+        strcpy(mtip,myfullip);
+    }
+
+
     idx = 2;
     
     configrequest = 0;
@@ -411,7 +425,7 @@ static int32_t old_downmixer_outqrg = 0;
     if(getNextElement(callsign) == 0) return;
     
     if(getNextElement(s) == 0) return;
-    websock_port = atoi(s);
+    // websock_port = atoi(s); ignore port from browser, use default port only
 
     if(getNextElement(s) == 0) return;
     allowRemoteAccess = atoi(s);
