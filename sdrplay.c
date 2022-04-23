@@ -107,6 +107,7 @@ int i;
     // Fetch list of available devices
     if ((err = sdrplay_api_GetDevices(devs, &ndev, sizeof(devs) / sizeof(sdrplay_api_DeviceT))) != sdrplay_api_Success)
     {
+        printf("MaxDevs=%ld NumDevs=%d\n", sizeof(devs) / sizeof(sdrplay_api_DeviceT), ndev);
         printf("sdrplay_api_GetDevices failed %s\n", sdrplay_api_GetErrorString(err));
         sdrplay_api_UnlockDeviceApi();
         sdrplay_api_Close();

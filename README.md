@@ -4,6 +4,9 @@ uses any Browser in your network or Internet to view / listen your SDR data
   
 # Server made for LINUX, GUI on any browser on any system.
 
+Update V3.2:
+- fixed: fifo wait function corrected (RTLsdr can hang without this correction)
+
 Update V3.1:
 - fixed: pluto NB transponder frequency
 - DVB-S2 bitrate calculator

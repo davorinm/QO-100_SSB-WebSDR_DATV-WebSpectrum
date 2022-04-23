@@ -50,6 +50,7 @@ pthread_cond_t	semaphore[NUM_OF_PIPES];
 #define WAKEUP(pn)	pthread_cond_signal(&(semaphore[pn]));
 void WAIT(int pn)	
 {
+	/* this code DOES NOT work correctly, don't use it
 	struct timespec timeToWait;
 	struct timeval now;
 	gettimeofday(&now,NULL);
@@ -58,6 +59,25 @@ void WAIT(int pn)
 	pthread_mutex_lock(&(waitmutex[pn])); 
 	pthread_cond_timedwait(&(semaphore[pn]),&(waitmutex[pn]),&timeToWait);
 	pthread_mutex_unlock(&(waitmutex[pn]));
+	*/
+
+	// this works
+	struct timespec timeToWait;
+	int rt = 0;
+
+	clock_gettime(CLOCK_REALTIME, &timeToWait); 
+	timeToWait.tv_nsec += 10UL * 1000UL * 1000UL; 
+	timeToWait.tv_nsec %= 1000000000UL; 
+	timeToWait.tv_sec += timeToWait.tv_nsec < (10UL * 1000UL * 1000UL) ? 1 : 0;
+
+    pthread_mutex_lock(&(waitmutex[pn])); 
+
+    do {
+        rt = pthread_cond_timedwait(&(semaphore[pn]),&(waitmutex[pn]),&timeToWait);
+	}
+    while (rt == 0);
+
+    pthread_mutex_unlock(&(waitmutex[pn]));
 }
 
 int wridx[NUM_OF_PIPES];
@@ -176,12 +196,17 @@ int read_pipe_wait(int pipenum, unsigned char *data, int maxlen)
 
 	int len = 0;
 
+	int cb_check = 0;
+	static int cb_max=0;
 	while (1)
 	{
 		len = read_pipe(pipenum, data, maxlen);
 		if (len > 0) break;
 		// Timeout 10ms, oder sofortiges Aufwachen wenn Daten in den Fifo geschrieben werden
 		WAIT(pipenum);
+		cb_check++;
+		if(cb_check > 1) printf("RX fifo time counter: %d max: %d\n",cb_check,cb_max);
+		if(cb_check > cb_max) cb_max = cb_check;
 	}
 	return len;
 }
